@@ -113,7 +113,6 @@ public class UserService {
             user.setRoles(roles);
         }
 
-        System.out.println("Teste de push");
 
         Optional.ofNullable(userData.name()).ifPresent(person::setName);
         Optional.ofNullable(userData.phoneNumber()).ifPresent(person::setPhoneNumber);
