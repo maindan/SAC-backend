@@ -113,7 +113,7 @@ public class UserService {
             user.setRoles(roles);
         }
 
-        System.out.println("Olá teste");
+        System.out.println("Olá olá olá");
 
         Optional.ofNullable(userData.name()).ifPresent(person::setName);
         Optional.ofNullable(userData.phoneNumber()).ifPresent(person::setPhoneNumber);
