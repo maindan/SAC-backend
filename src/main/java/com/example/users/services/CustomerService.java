@@ -34,10 +34,8 @@ public class CustomerService {
     }
 
     public List<CustomerRequestDTO> getAllCustomersByUserId(Long id) {
-        Optional<User> user =  userRepository.findById(id);
-        if(user.isEmpty()) {
-            throw new NotFoundException("Customers not found");
-        }
+        User user =  userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         List<Customer> customers = this.customerRepository.findAllByUser_Id(id).orElse(List.of());
         return convertCustomersList(customers);

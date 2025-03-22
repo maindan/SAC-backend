@@ -19,31 +19,31 @@ public class EquipamentController {
     private EquipamentService equipamentService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getEquipamentById(@PathVariable Long id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         EquipamentRequestDTO equipament = equipamentService.getById(id);
         return ResponseEntity.ok(equipament);
     }
 
     @GetMapping("/customer/{id}")
-    public ResponseEntity<?> getCustomerById(@PathVariable Long id) {
+    public ResponseEntity<?> getAllByCustomerId(@PathVariable Long id) {
         List<EquipamentRequestDTO> equipaments = equipamentService.getAllByCostumer(id);
         return ResponseEntity.ok(equipaments);
     }
 
     @PostMapping
-    public ResponseEntity<?> addEquipament(@RequestBody CreateEquipamentDTO equipamentData) {
+    public ResponseEntity<?> create(@RequestBody CreateEquipamentDTO equipamentData) {
         EquipamentRequestDTO equipament = equipamentService.createEquipament(equipamentData);
         return ResponseEntity.ok(equipament);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEquipament(@PathVariable Long id, @RequestBody UpdateEquipamentDTO equipamentData) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateEquipamentDTO equipamentData) {
         EquipamentRequestDTO equipament = equipamentService.updateEquipament(equipamentData, id);
         return ResponseEntity.ok(equipament);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEquipament(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         equipamentService.deleteEquipament(id);
         return ResponseEntity.ok().build();
     }
@@ -55,7 +55,7 @@ public class EquipamentController {
     }
 
     @PostMapping("/types")
-    public ResponseEntity<?> addType(@RequestBody EquipamentTypeDTO typeData) {
+    public ResponseEntity<?> createType(@RequestBody EquipamentTypeDTO typeData) {
         EquipamentType type = equipamentService.createEquipamentType(typeData);
         return ResponseEntity.ok(type);
     }

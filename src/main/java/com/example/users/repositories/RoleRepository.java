@@ -1,7 +1,7 @@
 package com.example.users.repositories;
 
 import com.example.users.domain.user.Role;
-import com.example.users.utils.RoleName;
+import com.example.users.domain.user.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

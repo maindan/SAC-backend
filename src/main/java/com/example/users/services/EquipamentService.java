@@ -31,11 +31,10 @@ public class EquipamentService {
     CustomerRepository customerRepository;
 
     public EquipamentRequestDTO getById(Long id) {
-        Optional<Equipament> equipament = this.equipamentRepository.findById(id);
-        if(equipament.isEmpty()) {
-            throw new NotFoundException("Equipament not found");
-        }
-        return convertEquipament(equipament.get());
+        Equipament equipament = this.equipamentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Equipament not found"));
+
+        return convertEquipament(equipament);
     }
 
     public List<EquipamentRequestDTO> getAllByCostumer(Long id) {
@@ -103,7 +102,7 @@ public class EquipamentService {
         return equipamentTypeRepository.save(equipamentType);
     }
 
-    private EquipamentRequestDTO convertEquipament(Equipament equipament) {
+    public EquipamentRequestDTO convertEquipament(Equipament equipament) {
         return new EquipamentRequestDTO(
                 equipament.getId(),
                 equipament.getType().getTypeName(),
@@ -118,7 +117,7 @@ public class EquipamentService {
             );
     }
 
-    private List<EquipamentRequestDTO> convertEquipaments(List<Equipament> equipaments) {
+    public List<EquipamentRequestDTO> convertEquipaments(List<Equipament> equipaments) {
         return equipaments.stream().map(this::convertEquipament).collect(Collectors.toList());
     }
 }

@@ -29,7 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody CreateCustomerDTO customerDTO) {
+    public ResponseEntity<?> as(@RequestBody CreateCustomerDTO customerDTO) {
         CustomerRequestDTO newCustomer = customerService.createCustomer(customerDTO);
         return ResponseEntity.ok(newCustomer);
     }

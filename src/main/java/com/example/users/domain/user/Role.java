@@ -1,6 +1,5 @@
 package com.example.users.domain.user;
 
-import com.example.users.utils.RoleName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

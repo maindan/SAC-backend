@@ -16,7 +16,7 @@ import com.example.users.repositories.UserRepository;
 import com.example.users.security.authentication.JwtTokenService;
 import com.example.users.security.config.SecurityConfiguration;
 import com.example.users.security.userDetail.UserDetailImplementation;
-import com.example.users.utils.RoleName;
+import com.example.users.domain.user.RoleName;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +25,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

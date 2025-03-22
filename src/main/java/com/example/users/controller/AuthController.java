@@ -21,13 +21,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<RecoveryJwtTokenDTO> authUser(@RequestBody LoginUserDTO loginUser) {
+    public ResponseEntity<RecoveryJwtTokenDTO> auth(@RequestBody LoginUserDTO loginUser) {
         RecoveryJwtTokenDTO token = userService.authUser(loginUser);
         return ResponseEntity.ok(token);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody UserCreateDTO data) throws Exception {
+    public ResponseEntity<?> create(@RequestBody UserCreateDTO data) throws Exception {
         userService.createUser(data);
         return ResponseEntity.ok().build();
     }

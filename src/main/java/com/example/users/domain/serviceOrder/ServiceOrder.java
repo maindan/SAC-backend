@@ -29,13 +29,20 @@ public class ServiceOrder {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @Column(nullable = false)
     private Date entryDate;
     private Date budgetDate;
-    private Integer budgetValue;
-    private Date clientFeedbackDate;
+    private Float budgetValue;
+    private Date warrantyClaimDate;
+    private Date warrantyApprovalDate;
     private Date removalDate;
-    private String type;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private ServiceOrderType type;
+
+    @Enumerated(EnumType.STRING)
+    private ServiceOrderStatus status;
+
     private String fiscalNumber;
     private String observation;
 
@@ -46,6 +53,10 @@ public class ServiceOrder {
             inverseJoinColumns = @JoinColumn(name = "equipament_id")
     )
     private List<Equipament> equipaments;
+
+    @OneToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = true)
+    private ServiceOrder parentServiceOrder;
 
     @ManyToOne
     @JoinColumn(name = "created_by")
