@@ -1,7 +1,9 @@
 package com.example.users.security.userDetail;
 
+import com.example.users.domain.user.Person;
 import com.example.users.domain.user.User;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +15,11 @@ import java.util.stream.Collectors;
 public class UserDetailImplementation implements UserDetails {
 
     private User user;
+    private final String personName;
 
-    public UserDetailImplementation(User user) {
+    public UserDetailImplementation(User user, Person person) {
         this.user = user;
+        this.personName = person != null ? person.getName() : null;
     }
 
     @Override

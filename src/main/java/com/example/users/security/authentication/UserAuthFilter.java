@@ -1,7 +1,9 @@
 package com.example.users.security.authentication;
 
+import com.example.users.domain.user.Person;
 import com.example.users.domain.user.User;
 import com.example.users.exceptions.UnauthorizedException;
+import com.example.users.repositories.PersonRepository;
 import com.example.users.repositories.UserRepository;
 import com.example.users.security.userDetail.UserDetailImplementation;
 import jakarta.servlet.FilterChain;
@@ -31,6 +33,9 @@ public class UserAuthFilter extends OncePerRequestFilter {
     @Autowired
     private HandlerExceptionResolver handlerExceptionResolver;
 
+    @Autowired
+    private PersonRepository personRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
@@ -44,8 +49,11 @@ public class UserAuthFilter extends OncePerRequestFilter {
             String token = recoveryToken(request);
             if (token != null) {
                 String subject = jwtTokenService.getSubjectFromToken(token);
-                User user = userRepository.findByEmail(subject).get();
-                UserDetailImplementation userDetails = new UserDetailImplementation(user);
+                User user = userRepository.findByEmail(subject).orElseThrow(() -> new UnauthorizedException("User not found"));
+
+                Person person = personRepository.findByUser_Id(user.getId()).orElseThrow(() -> new UnauthorizedException("Person not found"));
+
+                UserDetailImplementation userDetails = new UserDetailImplementation(user, person);
 
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
                 System.out.println("User Roles: " + userDetails.getAuthorities());
