@@ -5,5 +5,6 @@ public enum ServiceOrderStatus {
     AGUARDANDO_RETIRADA,
     AGUARDANDO_APROVACAO,
     AGUARDANDO_PECAS,
+    MANUTENCAO,
     FINALIZADO
 }
