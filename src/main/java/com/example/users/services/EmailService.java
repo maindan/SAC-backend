@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    private String SECRET_KEY = "re_GVMa9mfT_GfAS8tLZ6fzFcCBjYaoPJ165";
+    @Value("${RESEND_KEY}")
+    private String SECRET_KEY;
     @Value("${EMAIL}")
     private String EMAIL_FROM;
 
