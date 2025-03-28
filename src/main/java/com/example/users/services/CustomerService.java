@@ -47,6 +47,7 @@ public class CustomerService {
         Customer customer = new Customer();
         customer.setName(newCustomer.name());
         customer.setPhoneNumber(newCustomer.phoneNumber());
+        customer.setTypeBusiness(newCustomer.typeBusiness());
         customer.setRegisterNumber(newCustomer.registerNumber() != null ? newCustomer.registerNumber() : null);
         customer.setAddress(newCustomer.address() != null ? newCustomer.address() : null);
         customer.setUser(user);
