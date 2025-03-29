@@ -17,25 +17,25 @@ public class CustomerController {
     private CustomerService customerService;
 
     @GetMapping("/all/{id}")
-    public ResponseEntity<?> getByUserId(@PathVariable Long id) {
+    public ResponseEntity<List<CustomerRequestDTO>> getByUserId(@PathVariable Long id) {
         List<CustomerRequestDTO> customers = customerService.getAllCustomersByUserId(id);
         return ResponseEntity.ok(customers);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    public ResponseEntity<CustomerRequestDTO> getById(@PathVariable Long id) {
         CustomerRequestDTO customer = customerService.getCustomerById(id);
         return ResponseEntity.ok(customer);
     }
 
     @PostMapping
-    public ResponseEntity<?> as(@RequestBody CreateCustomerDTO customerDTO) {
+    public ResponseEntity<CustomerRequestDTO> as(@RequestBody CreateCustomerDTO customerDTO) {
         CustomerRequestDTO newCustomer = customerService.createCustomer(customerDTO);
         return ResponseEntity.ok(newCustomer);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateCustomerDTO customerDTO) {
+    public ResponseEntity<CustomerRequestDTO> update(@PathVariable Long id, @RequestBody CreateCustomerDTO customerDTO) {
         CustomerRequestDTO updatedCustomer = customerService.updateCustomer(id, customerDTO);
         return ResponseEntity.ok(updatedCustomer);
     }
