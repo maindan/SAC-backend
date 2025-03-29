@@ -23,7 +23,7 @@ public class ServiceOrderController {
         return ResponseEntity.ok(serviceOrderDTO);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/customer/{id}")
     public ResponseEntity<List<ServiceOrderDTO>> getAllByCustomerId(@PathVariable Long id) {
         List<ServiceOrderDTO> serviceOrderDTOList = serviceOrderService.getAllByCustomerId(id);
         return ResponseEntity.ok(serviceOrderDTOList);
