@@ -25,7 +25,7 @@ public class ServiceOrderController {
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<ServiceOrderDTO>> getAllByCustomerId(@PathVariable Long id) {
-        List<ServiceOrderDTO> serviceOrderDTOList = serviceOrderService.getAllByCustomerId(id);
+        List<ServiceOrderDTO> serviceOrderDTOList = serviceOrderService.findAllByCustomerId(id);
         return ResponseEntity.ok(serviceOrderDTOList);
     }
 

@@ -49,11 +49,11 @@ public class ServiceOrderService {
         return convertToDTO(serviceOrder);
     }
 
-    public List<ServiceOrderDTO> getAllByCustomerId(Long id) {
+    public List<ServiceOrderDTO> findAllByCustomerId(Long id) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
 
-        List<ServiceOrder> list = serviceOrderReposity.findAllByCustomer_Id(id);
+        List<ServiceOrder> list = serviceOrderReposity.findAllByCustomerId(id);
         idCheckService.validateOwner(customer.getUser().getId());
         return convertToDTOList(list);
     }
