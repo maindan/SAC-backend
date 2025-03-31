@@ -10,7 +10,7 @@ import com.example.users.domain.user.User;
 import com.example.users.exceptions.NotFoundException;
 import com.example.users.repositories.CustomerRepository;
 import com.example.users.repositories.EquipamentRepository;
-import com.example.users.repositories.ServiceOrderReposity;
+import com.example.users.repositories.ServiceOrderRepository;
 import com.example.users.repositories.UserRepository;
 import com.example.users.security.authentication.IdCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 public class ServiceOrderService {
     @Autowired
-    private ServiceOrderReposity serviceOrderReposity;
+    private ServiceOrderRepository serviceOrderRepository;
 
     @Autowired
     private EquipamentService equipamentService;
@@ -42,7 +42,7 @@ public class ServiceOrderService {
     private IdCheckService idCheckService;
 
     public ServiceOrderDTO getById(long id) {
-        ServiceOrder serviceOrder = serviceOrderReposity.findById(id)
+        ServiceOrder serviceOrder = serviceOrderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Service order not found"));
 
         idCheckService.validateOwner(serviceOrder.getUser().getId());
@@ -53,7 +53,7 @@ public class ServiceOrderService {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
 
-        List<ServiceOrder> list = serviceOrderReposity.findAllByCustomer_Id(id);
+        List<ServiceOrder> list = serviceOrderRepository.findAllByCustomer_Id(id);
         idCheckService.validateOwner(customer.getUser().getId());
         return convertToDTOList(list);
     }
@@ -63,7 +63,7 @@ public class ServiceOrderService {
                 .orElseThrow(() -> new NotFoundException("Equipament not found"));
         idCheckService.validateOwner(equipament.getCustomer().getUser().getId());
 
-        List<ServiceOrder> list = serviceOrderReposity.findAllByEquipaments_Id(id);
+        List<ServiceOrder> list = serviceOrderRepository.findAllByEquipaments_Id(id);
         return convertToDTOList(list);
     }
 
@@ -75,7 +75,7 @@ public class ServiceOrderService {
 
         ServiceOrder parentServiceOrder = null;
         if (serviceOrderDTO.parentId() != null) {
-            parentServiceOrder = serviceOrderReposity.findById(serviceOrderDTO.parentId())
+            parentServiceOrder = serviceOrderRepository.findById(serviceOrderDTO.parentId())
                     .orElseThrow(() -> new NotFoundException("Parent service order not found"));
         }
 
@@ -89,19 +89,19 @@ public class ServiceOrderService {
         Optional.ofNullable(serviceOrderDTO.fiscalNumber()).ifPresent(serviceOrder::setFiscalNumber);
         Optional.ofNullable(serviceOrderDTO.observation()).ifPresent(serviceOrder::setObservation);
         Optional.ofNullable(serviceOrderDTO.parentId())
-                .flatMap(serviceOrderReposity::findById)
+                .flatMap(serviceOrderRepository::findById)
                 .ifPresent(serviceOrder::setParentServiceOrder);
 
         Optional.ofNullable(serviceOrderDTO.equipaments())
                 .ifPresent(serviceOrder::setEquipaments);
 
-        ServiceOrder savedServiceOrder = serviceOrderReposity.save(serviceOrder);
+        ServiceOrder savedServiceOrder = serviceOrderRepository.save(serviceOrder);
 
         return convertToDTO(savedServiceOrder);
     }
 
     public ServiceOrderDTO updateServiceOrder(Long id, UpdateServiceOrderDTO serviceOrderDTO) {
-        ServiceOrder serviceOrder = serviceOrderReposity.findById(id)
+        ServiceOrder serviceOrder = serviceOrderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Service Order not found"));
 
         Optional.ofNullable(serviceOrderDTO.entryDate()).ifPresent(serviceOrder::setEntryDate);
@@ -116,22 +116,22 @@ public class ServiceOrderService {
         Optional.ofNullable(serviceOrderDTO.observation()).ifPresent(serviceOrder::setObservation);
 
         Optional.ofNullable(serviceOrderDTO.parentId())
-                .flatMap(serviceOrderReposity::findById)
+                .flatMap(serviceOrderRepository::findById)
                 .ifPresent(serviceOrder::setParentServiceOrder);
 
         Optional.ofNullable(serviceOrderDTO.equipaments()).ifPresent(serviceOrder::setEquipaments);
 
         serviceOrder.setUpdatedAt(Instant.now());
 
-        ServiceOrder updatedServiceOrder = serviceOrderReposity.save(serviceOrder);
+        ServiceOrder updatedServiceOrder = serviceOrderRepository.save(serviceOrder);
         return convertToDTO(updatedServiceOrder);
     }
 
     public void deleteServiceOrder(Long id) {
-        ServiceOrder serviceOrder = serviceOrderReposity.findById(id)
+        ServiceOrder serviceOrder = serviceOrderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Service Order not found"));
         idCheckService.validateOwner(serviceOrder.getUser().getId());
-        serviceOrderReposity.delete(serviceOrder);
+        serviceOrderRepository.delete(serviceOrder);
     }
 
     private ServiceOrderDTO convertToDTO(ServiceOrder serviceOrder) {
