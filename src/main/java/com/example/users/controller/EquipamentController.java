@@ -19,25 +19,25 @@ public class EquipamentController {
     private EquipamentService equipamentService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    public ResponseEntity<EquipamentRequestDTO> getById(@PathVariable Long id) {
         EquipamentRequestDTO equipament = equipamentService.getById(id);
         return ResponseEntity.ok(equipament);
     }
 
     @GetMapping("/customer/{id}")
-    public ResponseEntity<?> getAllByCustomerId(@PathVariable Long id) {
+    public ResponseEntity<List<EquipamentRequestDTO>> getAllByCustomerId(@PathVariable Long id) {
         List<EquipamentRequestDTO> equipaments = equipamentService.getAllByCostumer(id);
         return ResponseEntity.ok(equipaments);
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateEquipamentDTO equipamentData) {
+    public ResponseEntity<EquipamentRequestDTO> create(@RequestBody CreateEquipamentDTO equipamentData) {
         EquipamentRequestDTO equipament = equipamentService.createEquipament(equipamentData);
         return ResponseEntity.ok(equipament);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateEquipamentDTO equipamentData) {
+    public ResponseEntity<EquipamentRequestDTO> update(@PathVariable Long id, @RequestBody UpdateEquipamentDTO equipamentData) {
         EquipamentRequestDTO equipament = equipamentService.updateEquipament(equipamentData, id);
         return ResponseEntity.ok(equipament);
     }
@@ -49,13 +49,13 @@ public class EquipamentController {
     }
 
     @GetMapping("/types")
-    public ResponseEntity<?> getAllTypes() {
+    public ResponseEntity<List<EquipamentType>> getAllTypes() {
         List<EquipamentType> typeList = equipamentService.getEquipamentTypeList();
         return ResponseEntity.ok(typeList);
     }
 
     @PostMapping("/types")
-    public ResponseEntity<?> createType(@RequestBody EquipamentTypeDTO typeData) {
+    public ResponseEntity<EquipamentType> createType(@RequestBody EquipamentTypeDTO typeData) {
         EquipamentType type = equipamentService.createEquipamentType(typeData);
         return ResponseEntity.ok(type);
     }
