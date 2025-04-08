@@ -45,7 +45,6 @@ public class EquipamentService {
 
     public EquipamentRequestDTO createEquipament(CreateEquipamentDTO equipamentData) {
         Equipament equipament = new Equipament();
-        System.out.println("Chegou aqui");
 
         Optional.ofNullable(equipamentData.typeId()).ifPresent(typeId -> {
             EquipamentType type = equipamentTypeRepository.findById(typeId)
