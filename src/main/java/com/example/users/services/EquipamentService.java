@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -54,9 +55,14 @@ public class EquipamentService {
 
         Optional.ofNullable(equipamentData.typeName()).ifPresent(typeName -> {
             if(equipamentData.typeId() == null) {
-                EquipamentType type = new EquipamentType(typeName);
-                type = equipamentTypeRepository.save(type);
-                equipament.setType(type);
+                EquipamentType type = new EquipamentType(typeName.toLowerCase());
+                EquipamentType checkType = equipamentTypeRepository.findByTypeName(typeName.toLowerCase());
+                if(checkType == null) {
+                    type = equipamentTypeRepository.save(type);
+                    equipament.setType(type);
+                } else {
+                    equipament.setType(checkType);
+                }
             }
         });
 
@@ -66,9 +72,9 @@ public class EquipamentService {
         equipament.setModel(equipamentData.model());
         Optional.ofNullable(equipamentData.buyDate())
                 .ifPresent(equipament::setBuyDate);
-        Optional.ofNullable(equipament.getFabricator()).ifPresent(equipament::setFabricator);
-        Optional.ofNullable(equipament.getVoltage()).ifPresent(equipament::setVoltage);
-        Optional.ofNullable(equipament.getSerialNumber()).ifPresent(equipament::setSerialNumber);
+        Optional.ofNullable(equipamentData.fabricator()).ifPresent(equipament::setFabricator);
+        Optional.ofNullable(equipamentData.voltage()).ifPresent(equipament::setVoltage);
+        Optional.ofNullable(equipamentData.serialNumber()).ifPresent(equipament::setSerialNumber);
         equipament.setCustomer(customer);
         equipamentRepository.save(equipament);
         return convertEquipament(equipament);
