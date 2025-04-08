@@ -1,6 +1,5 @@
 package com.example.users.services;
 
-import com.example.users.DTO.customer.CustomerRequestDTO;
 import com.example.users.DTO.equipament.CreateEquipamentDTO;
 import com.example.users.DTO.equipament.EquipamentRequestDTO;
 import com.example.users.DTO.equipament.EquipamentTypeDTO;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,12 +45,25 @@ public class EquipamentService {
 
     public EquipamentRequestDTO createEquipament(CreateEquipamentDTO equipamentData) {
         Equipament equipament = new Equipament();
-        EquipamentType type = equipamentTypeRepository.findById(equipamentData.typeId())
-                .orElseThrow(() -> new NotFoundException("Equipament type not found"));
+        System.out.println("Chegou aqui");
+
+        Optional.ofNullable(equipamentData.typeId()).ifPresent(typeId -> {
+            EquipamentType type = equipamentTypeRepository.findById(typeId)
+                    .orElseThrow(() -> new NotFoundException("Equipament type not found"));
+            equipament.setType(type);
+        });
+
+        Optional.ofNullable(equipamentData.typeName()).ifPresent(typeName -> {
+            if(equipamentData.typeId() == null) {
+                EquipamentType type = new EquipamentType(typeName);
+                type = equipamentTypeRepository.save(type);
+                equipament.setType(type);
+            }
+        });
+
         Customer customer = customerRepository.findById(equipamentData.customerId())
                 .orElseThrow(()-> new NotFoundException("Customer not found"));
 
-        equipament.setType(type);
         equipament.setModel(equipamentData.model());
         Optional.ofNullable(equipamentData.buyDate())
                 .ifPresent(equipament::setBuyDate);

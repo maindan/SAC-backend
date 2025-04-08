@@ -4,6 +4,7 @@ import java.util.Date;
 
 public record CreateEquipamentDTO(
         Long typeId,
+        String typeName,
         String model,
         String fabricator,
         Date buyDate,

@@ -25,4 +25,8 @@ public class EquipamentType {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt = Instant.now();
+
+    public EquipamentType(String typeName) {
+        this.typeName = typeName;
+    }
 }
