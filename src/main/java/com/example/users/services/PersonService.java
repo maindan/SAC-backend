@@ -41,7 +41,6 @@ public class PersonService {
         Optional.ofNullable(updatedPerson.name()).ifPresent(person::setName);
         Optional.ofNullable(updatedPerson.phoneNumber()).ifPresent(person::setPhoneNumber);
 
-        person.setUpdatedAt(Instant.now());
         return convertPersonDTO(personRepository.save(person));
     }
 
@@ -62,7 +61,6 @@ public class PersonService {
                 person.getUser().getUpdatedAt()
         ));
     }
-
 
     private List<PersonRequestDTO> convertPersonList(List<Person> people) {
         return people.stream().map(this::convertPersonDTO).collect(Collectors.toList());

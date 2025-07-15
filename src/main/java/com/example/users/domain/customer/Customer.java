@@ -1,5 +1,6 @@
 package com.example.users.domain.customer;
 
+import com.example.users.domain.BaseEntity;
 import com.example.users.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,15 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-
 @Table(name = "customer")
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class Customer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,10 +35,4 @@ public class Customer {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User user;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
-
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt = Instant.now();
 }

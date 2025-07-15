@@ -18,6 +18,7 @@ import com.example.users.security.config.SecurityConfiguration;
 import com.example.users.security.userDetail.UserDetailImplementation;
 import com.example.users.utils.RoleName;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,21 +33,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private PersonRepository personRepository;
-    @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
     private JwtTokenService jwtTokenService;
-    @Autowired
     private SecurityConfiguration securityConfiguration;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    PersonService personService;
+    private RoleRepository roleRepository;
+    private PersonService personService;
 
     public List<UserRequestDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -69,15 +64,10 @@ public class UserService {
             List<Role> roles = userData.roles().stream()
                     .map(roleName -> {
                         try {
-                            Role role = roleRepository.findByName(RoleName.valueOf(roleName.toUpperCase()))
-                                    .orElseGet(() -> {
-                                        Role newRole = new Role(RoleName.valueOf(roleName.toUpperCase()));
-                                        roleRepository.save(newRole);
-                                        return newRole;
-                                    });
+                            Role role = roleRepository.findByName(RoleName.valueOf(roleName.toUpperCase())).get();
                             return role;
                         } catch (IllegalArgumentException e) {
-                            throw new RuntimeException("Invalid role name: " + roleName);
+                            throw new NotFoundException("Role " + roleName + " not found");
                         }
                     })
                     .collect(Collectors.toList());
@@ -89,7 +79,7 @@ public class UserService {
             person.setName(userData.name());
             person.setPhoneNumber(userData.phoneNumber());
             person.setUser(user);
-            person = personRepository.save(person);
+            personRepository.save(person);
         } catch (Exception e) {
             throw new Exception("Erro ao criar usuário " + e.getMessage());
         }
@@ -113,13 +103,8 @@ public class UserService {
             user.setRoles(roles);
         }
 
-        System.out.println("Olá olá olá");
-
         Optional.ofNullable(userData.name()).ifPresent(person::setName);
         Optional.ofNullable(userData.phoneNumber()).ifPresent(person::setPhoneNumber);
-
-        user.setUpdatedAt(Instant.now());
-        person.setUpdatedAt(Instant.now());
 
         userRepository.save(user);
         personRepository.save(person);

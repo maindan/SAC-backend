@@ -66,7 +66,6 @@ public class CustomerService {
         Optional.ofNullable(updatedCustomer.typeBusiness()).ifPresent(customer::setTypeBusiness);
         Optional.ofNullable(updatedCustomer.address()).ifPresent(customer::setAddress);
 
-        customer.setUpdatedAt(Instant.now());
         return convertCustomer(customerRepository.save(customer));
     }
 

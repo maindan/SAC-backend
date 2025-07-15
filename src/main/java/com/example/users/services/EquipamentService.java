@@ -81,8 +81,6 @@ public class EquipamentService {
         Optional.ofNullable(equipamentData.voltage()).ifPresent(equipament::setVoltage);
         Optional.ofNullable(equipament.getSerialNumber()).ifPresent(equipament::setSerialNumber);
 
-        equipament.setUpdatedAt(Instant.now());
-
         return convertEquipament(equipamentRepository.save(equipament));
     }
 

@@ -1,6 +1,7 @@
 package com.example.users.DTO.equipament;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public record EquipamentRequestDTO(
         Long id,
@@ -11,7 +12,7 @@ public record EquipamentRequestDTO(
         String voltage,
         String serialNumber,
         Long customerId,
-        Instant createdAt,
-        Instant updatedAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

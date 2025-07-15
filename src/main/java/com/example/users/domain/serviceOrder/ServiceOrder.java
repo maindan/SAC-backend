@@ -1,5 +1,6 @@
 package com.example.users.domain.serviceOrder;
 
+import com.example.users.domain.BaseEntity;
 import com.example.users.domain.customer.Customer;
 import com.example.users.domain.equipament.Equipament;
 import com.example.users.domain.user.User;
@@ -9,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceOrder {
+public class ServiceOrder extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,10 +49,4 @@ public class ServiceOrder {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User user;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
-
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt = Instant.now();
 }

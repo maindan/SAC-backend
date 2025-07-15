@@ -1,6 +1,7 @@
 package com.example.users.DTO.customer;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public record CustomerRequestDTO(
         Long id,
@@ -10,7 +11,7 @@ public record CustomerRequestDTO(
         Boolean typeBusiness,
         String address,
         Long userId,
-        Instant createdAt,
-        Instant updatedAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }
