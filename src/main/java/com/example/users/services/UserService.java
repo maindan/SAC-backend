@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -35,13 +36,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private UserRepository userRepository;
-    private PersonRepository personRepository;
-    private AuthenticationManager authenticationManager;
-    private JwtTokenService jwtTokenService;
-    private SecurityConfiguration securityConfiguration;
-    private RoleRepository roleRepository;
-    private PersonService personService;
+    private final UserRepository userRepository;
+    private final PersonRepository personRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenService jwtTokenService;
+    private final RoleRepository roleRepository;
+    private final PersonService personService;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserRequestDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -60,14 +61,15 @@ public class UserService {
         try {
             User user = new User();
             user.setEmail(userData.email());
-            user.setPassword(securityConfiguration.passwordEncoder().encode(userData.password()));
+            user.setPassword(passwordEncoder.encode(userData.password()));
             List<Role> roles = userData.roles().stream()
                     .map(roleName -> {
                         try {
-                            Role role = roleRepository.findByName(RoleName.valueOf(roleName.toUpperCase())).get();
-                            return role;
+                            RoleName roleEnum = RoleName.valueOf(roleName.toUpperCase());
+                            return roleRepository.findByName(roleEnum)
+                                    .orElseThrow(() -> new NotFoundException("Role " + roleName + " not found"));
                         } catch (IllegalArgumentException e) {
-                            throw new NotFoundException("Role " + roleName + " not found");
+                            throw new NotFoundException("Role " + roleName + " is invalid");
                         }
                     })
                     .collect(Collectors.toList());

@@ -5,6 +5,7 @@ import com.example.users.DTO.user.UserRequestDTO;
 import com.example.users.domain.user.Person;
 import com.example.users.exceptions.NotFoundException;
 import com.example.users.repositories.PersonRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PersonService {
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public List<PersonRequestDTO> getAll() {
         List<Person> people = personRepository.findAll();

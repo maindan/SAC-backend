@@ -8,6 +8,7 @@ import com.example.users.exceptions.NotFoundException;
 import com.example.users.repositories.CustomerRepository;
 import com.example.users.repositories.UserRepository;
 import com.example.users.security.authentication.IdCheckService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private IdCheckService idCheckService;
+    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
+    private final IdCheckService idCheckService;
 
     public CustomerRequestDTO getCustomerById(Long id) {
         Customer customer = this.customerRepository.findById(id)
@@ -51,6 +50,7 @@ public class CustomerService {
         customer.setPhoneNumber(newCustomer.phoneNumber());
         customer.setRegisterNumber(newCustomer.registerNumber() != null ? newCustomer.registerNumber() : null);
         customer.setAddress(newCustomer.address() != null ? newCustomer.address() : null);
+        customer.setTypeBusiness(newCustomer.typeBusiness());
         customer.setUser(user);
         Customer savedCustomer = this.customerRepository.save(customer);
         return convertCustomer(savedCustomer);

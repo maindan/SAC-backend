@@ -12,6 +12,7 @@ import com.example.users.exceptions.NotFoundException;
 import com.example.users.repositories.CustomerRepository;
 import com.example.users.repositories.EquipamentRepository;
 import com.example.users.repositories.EquipamentTypeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class EquipamentService {
-    @Autowired
-    private EquipamentRepository equipamentRepository;
-    @Autowired
-    private EquipamentTypeRepository equipamentTypeRepository;
-    @Autowired
-    CustomerRepository customerRepository;
+    private final EquipamentRepository equipamentRepository;
+    private final EquipamentTypeRepository equipamentTypeRepository;
+    private final CustomerRepository customerRepository;
 
     public EquipamentRequestDTO getById(Long id) {
         Optional<Equipament> equipament = this.equipamentRepository.findById(id);
