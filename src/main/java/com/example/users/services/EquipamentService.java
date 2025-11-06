@@ -41,7 +41,8 @@ public class EquipamentService {
         Customer customer = this.customerRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("Customer not found"));
 
-        List<Equipament> equipamentsList = this.equipamentRepository.findAllByCustomerId(id).orElse(List.of());
+        List<Equipament> equipamentsList = this.equipamentRepository.findAllByCustomerId(id)
+                .orElse(new ArrayList<>());
         return convertEquipaments(equipamentsList);
     }
 
